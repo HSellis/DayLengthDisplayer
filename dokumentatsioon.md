@@ -6,3 +6,7 @@
 28.04:
 1h - päikesetõusu ja -loojangu aja arvutamise kohta info otsimine
 1h - Etapp 1 implementeerimine
+
+29.04:
+1h - SunCalc libraryle üleminek ja veebilehe kujundamine
+2h - Vue Leafletiga kaardi tööle saamine

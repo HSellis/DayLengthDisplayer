@@ -9,4 +9,4 @@
 
 29.04:
 1h - SunCalc libraryle üleminek ja veebilehe kujundamine
-2h - Vue Leafletiga kaardi tööle saamine
+3h - Vue Leafletiga kaardi tööle saamine ja kaardilt info kätte saamine

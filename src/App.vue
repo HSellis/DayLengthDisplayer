@@ -4,19 +4,24 @@
     <section id="main-container">
       <div>
         <label>Set the date:</label>
-        <input type="datetime-local">
+        <input type="datetime-local" v-model="dateString">
       </div>
 
       <div>
         <label>and select coordinates from the map:</label>
         <div id="map-area">
-          <Map></Map>
+          <Map :map-clicked="mapClicked"></Map>
         </div>
       </div>
 
       <div>
         <label>Or enter the coordinates manually:</label>
-        <InfoInput :display-day-length-info="displayDayLengthInfo"></InfoInput>
+        <input type="number" placeholder="Latitude" v-model="latitude">
+        <input type="number" placeholder="Longitude" v-model="longitude">
+      </div>
+
+      <div>
+        <button @click="calculateTimeInfo">Calculate</button>
       </div>
 
       <div id="results-container">
@@ -31,7 +36,6 @@
 </template>
 
 <script>
-import InfoInput from "./components/InfoInput";
 import Map from "./components/Map";
 
 const SunCalc = require('suncalc');
@@ -40,31 +44,48 @@ export default {
   name: 'App',
   data: () => {
     return {
-      sunRise: 0,
-      sunSet: 0,
-      dayLength: 0,
-      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      dateString: null,
+      latitude: null,
+      longitude: null,
+
+      sunRise: null,
+      sunSet: null,
+      dayLength: null,
     }
   },
   methods: {
-    displayDayLengthInfo: function (latitude, longitude, date) {
+    calculateTimeInfo: function () {
+      if (!this.dateString) {
+        alert("Please select a date")
+        return
+      }
+      if (!this.longitude) {
+        alert("Please specify a longitude")
+        return;
+      }
+      if (!this.latitude) {
+        alert("PLease specify a latitude")
+        return;
+      }
 
-      //let dayTimeInfo = this.calculateDayTimeInfo(latitude, longitude, date)
-      let times = SunCalc.getTimes(date, latitude, longitude);
+      let times = SunCalc.getTimes(new Date(this.dateString), this.latitude, this.longitude);
       let sunriseStr = times.sunrise.getHours() + ':' + times.sunrise.getMinutes();
       let sunsetStr = times.sunset.getHours() + ':' + times.sunset.getMinutes();
       let dayLengthMinutes = (times.sunset - times.sunrise) / 1000 / 60;
-      let dayLengthHours = Math.floor(dayLengthMinutes / 60)
-      let dayLengthTime = dayLengthHours + 'h ' + Math.round(dayLengthMinutes - dayLengthHours * 60) + 'min'
+      let dayLengthHours = Math.floor(dayLengthMinutes / 60);
+      let dayLengthTime = dayLengthHours + 'h ' + Math.round(dayLengthMinutes - dayLengthHours * 60) + 'min';
 
       this.sunRise = sunriseStr
       this.sunSet = sunsetStr
       this.dayLength = dayLengthTime
+    },
+    mapClicked: function (event) {
+      this.latitude = event.latlng.lat;
+      this.longitude = event.latlng.lng;
     }
   },
   components: {
     Map,
-    InfoInput,
   }
 }
 </script>

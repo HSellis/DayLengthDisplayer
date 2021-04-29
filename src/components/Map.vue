@@ -6,6 +6,7 @@
         :options="mapOptions"
         @update:center="centerUpdate"
         @update:zoom="zoomUpdate"
+        @click="mapClicked"
     >
       <l-tile-layer
           :url="url"
@@ -46,6 +47,9 @@ export default {
     centerUpdate(center) {
       this.currentCenter = center;
     }
+  },
+  props: {
+    mapClicked: Function
   }
 }
 </script>

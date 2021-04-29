@@ -3,12 +3,7 @@
     <h1>Day length calculator</h1>
     <section id="main-container">
       <div>
-        <label>Set the date:</label>
-        <input type="datetime-local" v-model="dateString">
-      </div>
-
-      <div>
-        <label>and select coordinates from the map:</label>
+        <label>Select coordinates from the map:</label>
         <div id="map-area">
           <Map :map-clicked="mapClicked"></Map>
         </div>
@@ -16,8 +11,19 @@
 
       <div>
         <label>Or enter the coordinates manually:</label>
-        <input type="number" placeholder="Latitude" v-model="latitude">
-        <input type="number" placeholder="Longitude" v-model="longitude">
+        <div>
+          <label>Latitude: </label>
+          <input type="number" v-model="latitude">
+        </div>
+        <div>
+          <label>Longitude: </label>
+          <input type="number" v-model="longitude">
+        </div>
+      </div>
+
+      <div>
+        <label>Set the date:</label>
+        <input type="datetime-local" v-model="dateString">
       </div>
 
       <div>
@@ -25,9 +31,12 @@
       </div>
 
       <div id="results-container">
-        <label>Päikesetõus: {{sunRise}}</label>
-        <label>Päikeseloojang: {{sunSet}}</label>
-        <label>Päeva pikkus: {{dayLength}}</label>
+        <label>Sunrise: {{sunRise}}</label>
+        <br>
+        <label>Sunset: {{sunSet}}</label>
+        <br>
+        <label>Length of day: {{dayLength}}</label>
+        <br>
       </div>
     </section>
 
@@ -80,8 +89,8 @@ export default {
       this.dayLength = dayLengthTime
     },
     mapClicked: function (event) {
-      this.latitude = event.latlng.lat;
-      this.longitude = event.latlng.lng;
+      this.latitude = Math.round(event.latlng.lat * 10000) / 10000;
+      this.longitude = Math.round(event.latlng.lng * 10000) / 10000;
     }
   },
   components: {

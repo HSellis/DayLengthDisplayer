@@ -5,7 +5,7 @@
       <div>
         <label>Select coordinates from the map:</label>
         <div id="map-area">
-          <Map :map-clicked="mapClicked"></Map>
+          <Map :input-center="mapCenter" :map-clicked="mapClicked"></Map>
         </div>
       </div>
 
@@ -13,11 +13,11 @@
         <label>Or enter the coordinates manually:</label>
         <div>
           <label>Latitude: </label>
-          <input type="number" v-model="latitude">
+          <input type="number" min="-90" max="90" step="0.0001" v-model="latitude">
         </div>
         <div>
           <label>Longitude: </label>
-          <input type="number" v-model="longitude">
+          <input type="number" min="-180" max="180" step="0.0001" v-model="longitude">
         </div>
       </div>
 
@@ -46,7 +46,7 @@
 
 <script>
 import Map from "./components/Map";
-
+import {latLng} from 'leaflet';
 const SunCalc = require('suncalc');
 
 export default {
@@ -54,12 +54,17 @@ export default {
   data: () => {
     return {
       dateString: null,
-      latitude: null,
-      longitude: null,
+      latitude: 0,
+      longitude: 0,
 
       sunRise: null,
       sunSet: null,
       dayLength: null,
+    }
+  },
+  computed: {
+    mapCenter: function () {
+      return latLng(parseFloat(this.latitude), parseFloat(this.longitude))
     }
   },
   methods: {
@@ -77,7 +82,7 @@ export default {
         return;
       }
 
-      let times = SunCalc.getTimes(new Date(this.dateString), this.latitude, this.longitude);
+      let times = SunCalc.getTimes(new Date(this.dateString), parseFloat(this.latitude), parseFloat(this.longitude));
       let sunriseStr = times.sunrise.getHours() + ':' + times.sunrise.getMinutes();
       let sunsetStr = times.sunset.getHours() + ':' + times.sunset.getMinutes();
       let dayLengthMinutes = (times.sunset - times.sunrise) / 1000 / 60;

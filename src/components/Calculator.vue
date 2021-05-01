@@ -1,43 +1,46 @@
 <template>
-  <section>
-    <div>
-      <label>Set the date:</label>
-      <input type="datetime-local" v-model="dateString">
-    </div>
-    <div>
-      <button @click="calculateTimeInfo">Calculate</button>
-    </div>
-    <div id="results-container">
-      <label>Sunrise: {{ sunRise }}</label>
-      <br>
-      <label>Sunset: {{ sunSet }}</label>
-      <br>
-      <label>Length of day: {{ dayLength }}</label>
-      <br>
-    </div>
-    <section id="main-graph-section">
-      <h2>Graph visualizing</h2>
-      <h4>To visualize the length of day over a period of time, select the time period</h4>
-      <div id="time-period-selecting">
-        <div>
-          <label>Start date: </label>
-          <input type="datetime-local" v-model="startDate">
-        </div>
-        <div>
-          <label>End date: </label>
-          <input type="datetime-local" v-model="endDate">
+  <section id="main-section">
+    <div id="info-area">
+      <div id="upper-info">
+        <h3>One day</h3>
+        <a>To see detailed information about one day, select a date.</a>
+        <input type="datetime-local" v-model="dateString">
+        <br>
+        <button @click="calculateTimeInfo">Calculate</button>
+        <div id="results-container">
+          <label>Sunrise: {{ sunRise }}</label>
+          <br>
+          <label>Sunset: {{ sunSet }}</label>
+          <br>
+          <label>Length of day: {{ dayLength }}</label>
+          <br>
         </div>
       </div>
-
-      <div id="graph-area" v-if="startDate && endDate">
-        <GChart
-            type="AreaChart"
-            :data="chartData"
-            :options="chartOptions"
-        />
+      <div id="lower-info">
+        <h3>Period of time</h3>
+        <a>To visualize the length of day over a period of time, select a time period.</a>
+        <div id="time-period-selecting">
+          <div>
+            <label>Start date: </label>
+            <input type="datetime-local" v-model="startDate">
+          </div>
+          <div>
+            <label>End date: </label>
+            <input type="datetime-local" v-model="endDate">
+          </div>
+        </div>
       </div>
+    </div>
 
-    </section>
+    <div id="graph-area">
+      <GChart
+          v-if="startDate && endDate"
+          id="chart"
+          type="AreaChart"
+          :data="chartData"
+          :options="chartOptions"
+      />
+    </div>
   </section>
 </template>
 
@@ -120,9 +123,43 @@ export default {
 
 <style scoped>
 
-#graph-area {
-  height: 600px;
+#main-section {
+  height: 100%;
   width: 100%;
+  display: flex;
+  justify-content: left;
+}
+
+#main-section > div {
+  border: solid 3px black;
+}
+
+#info-area {
+  width: 25%;
+  justify-content: center;
+}
+
+#info-area > div {
+  margin: 5px;
+  border: 2px solid lightgray;
+  width: 95%;
+}
+
+#upper-info {
+  height: 50%;
+}
+
+#lower-info {
+  height: 50%;
+}
+
+#graph-area {
+  width: 75%;
+}
+
+#chart {
+  width: 100%;
+  height: 100%;
 }
 
 </style>

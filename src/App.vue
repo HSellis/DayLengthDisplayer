@@ -2,24 +2,27 @@
   <div id="app">
     <h1>Day length calculator</h1>
     <section id="main-container">
-      <div>
-        <label>Select coordinates from the map:</label>
+      <div id="coordinate-area">
+        <div id="info-area">
+          <h3>Specify coordinates</h3>
+          <label>Select coordinates from the map</label>
+          <br>
+          <br>
+          <label>Or enter the coordinates manually.</label>
+          <div>
+            <label>Latitude: </label>
+            <input type="number" min="-90" max="90" step="0.0001" v-model="latitude">
+          </div>
+          <div>
+            <label>Longitude: </label>
+            <input type="number" min="-180" max="180" step="0.0001" v-model="longitude">
+          </div>
+        </div>
         <div id="map-area">
           <Map :input-center="mapCoords" :map-clicked="mapClicked"></Map>
         </div>
       </div>
-      <div>
-        <label>Or enter the coordinates manually:</label>
-        <div>
-          <label>Latitude: </label>
-          <input type="number" min="-90" max="90" step="0.0001" v-model="latitude">
-        </div>
-        <div>
-          <label>Longitude: </label>
-          <input type="number" min="-180" max="180" step="0.0001" v-model="longitude">
-        </div>
-      </div>
-      <div id="calculator-area">
+      <div id="calculator">
         <Calculator :selected-coords="mapCoords"></Calculator>
       </div>
     </section>
@@ -58,33 +61,45 @@ export default {
 </script>
 
 <style>
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 15px;
+  height: 100%;
+  width: 99%;
 }
 #main-container {
   width: 100%;
-  //display: flex;
-  //justify-content: center;
+  height: 800px;
   align-items: center;
-  padding: 50px;
+  padding: 10px;
+  border: dotted black;
 }
 
-#main-container div {
-  padding: 20px;
+#main-container > div {
+  width: 100%;
+  height: 50%;
+}
+
+#coordinate-area {
+  display: flex;
+  justify-content: left;
+}
+
+#coordinate-area > div {
+  border: solid 3px black;
+}
+
+#info-area {
+  width: 25%;
 }
 
 #map-area {
   width: 75%;
-  height: 500px;
-  margin: 40px;
-  align-items: center;
 }
-
-
 
 </style>

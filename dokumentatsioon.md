@@ -18,3 +18,4 @@
 
 01.05:
 2h -   erinevate graafikuraamistike uurimine, Google Vue Chartsi valimine ja graafiku implementeerimine
+1.5h - kujunduse ja lehel näha oleva teksti muutmine ja parandamine

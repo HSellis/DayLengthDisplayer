@@ -1,7 +1,5 @@
 <template>
   <section id="map-container">
-    <label>{{center}}</label>
-    <label>{{inputCenter}}</label>
     <l-map
         :zoom="zoom"
         :center="center"
@@ -37,8 +35,8 @@ export default {
   },
   data: () => {
     return {
-      center: [58.3, 25.7],
-      zoom: 10,
+      center: [0, 0],
+      zoom: 2,
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       mapOptions: {

@@ -13,4 +13,5 @@
 0.5h - kujunduse parandamine
 
 30.04:
-1.5h - manuaalselt koordinaatide valimine kajastub automaatselt ka kaardil
+1.5h - manuaalselt koordinaatide valimine kajastub automaatselt ka kaardil,
+       l-markeri bugfix

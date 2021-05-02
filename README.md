@@ -21,26 +21,25 @@ Viimaseks raskuseks oli polaarpäevade ja -öödega arvestamine - SunCalci funkt
 
 ## Ajakulu
 24.04:
-0,5h - projekti üles seadmine ning OpenLayers ja Leafleti kohta lugemine
+* 0,5h - projekti üles seadmine ning OpenLayers ja Leafleti kohta lugemine
 
 28.04:
-1h -   päikesetõusu ja -loojangu aja arvutamise kohta info otsimine
-1h -   Etapp 1 implementeerimine
+* 1h -   päikesetõusu ja -loojangu aja arvutamise kohta info otsimine
+* 1h -   Etapp 1 implementeerimine
 
 29.04:
-1h -   SunCalc libraryle üleminek ja veebilehe kujundamine
-3h -   Vue Leafletiga kaardi tööle saamine ja kaardilt info kätte saamine
-0.5h - kujunduse parandamine
+* 1h -   SunCalc libraryle üleminek ja veebilehe kujundamine
+* 3h -   Vue Leafletiga kaardi tööle saamine ja kaardilt info kätte saamine
+* 0.5h - kujunduse parandamine
 
 30.04:
-1.5h - manuaalselt koordinaatide valimine kajastub automaatselt ka kaardil,
-l-markeri bugfix
+* 1.5h - manuaalselt koordinaatide valimine kajastub automaatselt ka kaardil, l-markeri bugfix
 
 01.05:
-2h -   erinevate graafikuraamistike uurimine, Google Vue Chartsi valimine ja graafiku implementeerimine
-1.5h - kujunduse ja lehel näha oleva teksti muutmine ja parandamine
+* 2h -   erinevate graafikuraamistike uurimine, Google Vue Chartsi valimine ja graafiku implementeerimine
+* 1.5h - kujunduse ja lehel näha oleva teksti muutmine ja parandamine
 
 02.05:
-1.5h - polaarpäeva ja polaarööga arvestamine ja errorite vältimine
-1h -   kujunduse parandamine
-1h -   dokumentatsiooni täiustamine
+* 1.5h - polaarpäeva ja polaarööga arvestamine ja errorite vältimine
+* 1h -   kujunduse parandamine
+* 1h -   dokumentatsiooni täiustamine

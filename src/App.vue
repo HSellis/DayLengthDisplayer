@@ -70,7 +70,7 @@ export default {
   color: #2c3e50;
   margin-top: 15px;
   height: 100%;
-  width: 99%;
+  width: 98%;
 }
 #main-container {
   width: 100%;

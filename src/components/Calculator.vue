@@ -6,13 +6,15 @@
         <a>To see detailed information about one day, select a date.</a>
         <input type="datetime-local" v-model="dateString">
         <br>
-        <button @click="calculateTimeInfo">Calculate</button>
-        <div id="results-container">
-          <label>Sunrise: {{ sunRise }}</label>
+        <div id="results-container" v-if="dateString">
+          <label v-if="oneDayInfo.polarDay">POLAR DAY</label>
+          <label v-else-if="oneDayInfo.polarNight">POLAR NIGHT</label>
+
+          <label v-if="oneDayInfo.sunriseStr">Sunrise: {{ oneDayInfo.sunriseStr }}</label>
           <br>
-          <label>Sunset: {{ sunSet }}</label>
+          <label v-if="oneDayInfo.sunsetStr">Sunset: {{ oneDayInfo.sunsetStr }}</label>
           <br>
-          <label>Length of day: {{ dayLength }}</label>
+          <label>Length of day: {{ oneDayInfo.dayLength }}</label>
           <br>
         </div>
       </div>
@@ -23,6 +25,7 @@
           <div>
             <label>Start date: </label>
             <input type="datetime-local" v-model="startDate">
+            <label>{{startDate}}</label>
           </div>
           <div>
             <label>End date: </label>
@@ -55,10 +58,6 @@ export default {
     return {
       dateString: null,
 
-      sunRise: null,
-      sunSet: null,
-      dayLength: null,
-
       startDate: null,
       endDate: null,
 
@@ -72,28 +71,21 @@ export default {
   computed: {
     chartData: function () {
       let diffInDays = (new Date(this.endDate) - new Date(this.startDate)) / 1000 / 60 / 60 / 24;
-      console.log("diff: " + diffInDays)
       let data = [
         //['Date', 'Length of day']
       ]
       for (let i = 0; i < diffInDays; i++) {
         let date = new Date(this.startDate)
         date.setDate(date.getDate() + i)
-        let times = SunCalc.getTimes(date, this.selectedCoords.lat, this.selectedCoords.lng)
-        let dayLength = (times.sunset - times.sunrise) / 1000 / 60 / 60
+        //let times = SunCalc.getTimes(date, this.selectedCoords.lat, this.selectedCoords.lng)
+        //let dayLength = (times.sunset - times.sunrise) / 1000 / 60 / 60
+        let dayLength = this.calculateTimes(date, this.selectedCoords.lat, this.selectedCoords.lng).dayLength
         data.push([date, dayLength])
       }
       data.unshift(['Date', 'Length of day'])
-      console.log(data)
       return data
-    }
-
-  },
-  props: {
-    selectedCoords: Object,
-  },
-  methods: {
-    calculateTimeInfo: function () {
+    },
+    oneDayInfo: function () {
       if (!this.dateString) {
         alert("Please select a date")
         return
@@ -103,16 +95,63 @@ export default {
         return;
       }
 
-      let times = SunCalc.getTimes(new Date(this.dateString), this.selectedCoords.lat, this.selectedCoords.lng);
+      let times = this.calculateTimes(new Date(this.dateString), this.selectedCoords.lat, this.selectedCoords.lng)
+      if (!times.sunrise || !times.sunset) {
+        return {
+          sunriseStr: null,
+          sunsetStr: null,
+          dayLength: times.dayLength + 'h',
+          polarDay: times.dayLength === 24,
+          polarNight: times.dayLength === 0
+        }
+      }
+
       let sunriseStr = times.sunrise.getHours() + ':' + times.sunrise.getMinutes();
       let sunsetStr = times.sunset.getHours() + ':' + times.sunset.getMinutes();
-      let dayLengthMinutes = (times.sunset - times.sunrise) / 1000 / 60;
+      let dayLengthMinutes = times.dayLength * 60
       let dayLengthHours = Math.floor(dayLengthMinutes / 60);
       let dayLengthTime = dayLengthHours + 'h ' + Math.round(dayLengthMinutes - dayLengthHours * 60) + 'min';
 
-      this.sunRise = sunriseStr
-      this.sunSet = sunsetStr
-      this.dayLength = dayLengthTime
+      return {
+        sunriseStr: sunriseStr,
+        sunsetStr: sunsetStr,
+        dayLength: dayLengthTime,
+        polarDay: false,
+        polarNight: false
+      }
+    },
+  },
+  props: {
+    selectedCoords: Object,
+  },
+  methods: {
+    calculateTimes: function (date, latitude, longitude) {
+      let times = SunCalc.getTimes(date, latitude, longitude);
+      if (isNaN(times.sunrise) || isNaN(times.sunset)) {
+        // polar day or polar night
+        const springEquinox = new Date(date.getFullYear() + '-03-20')
+        const autumnEquinox = new Date(date.getFullYear() + '-09-23')
+        let dayLength = null
+        if (date < springEquinox || date > autumnEquinox) {
+          if (latitude > 0) dayLength = 0
+          else dayLength = 24
+        }
+        else if (date > springEquinox && date < autumnEquinox) {
+          if (latitude > 0) dayLength = 24
+          else dayLength = 0
+        }
+        return {
+          sunrise: null,
+          sunset: null,
+          dayLength: dayLength
+        }
+      }
+
+      return {
+        sunrise: times.sunrise,
+        sunset: times.sunset,
+        dayLength: (times.sunset - times.sunrise) / 1000 / 60 / 60
+      }
     },
   },
   components: {

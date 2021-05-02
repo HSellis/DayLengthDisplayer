@@ -2,33 +2,37 @@
   <section id="main-section">
     <div id="info-area">
       <div id="upper-info">
-        <h3>One day</h3>
-        <a>To see detailed information about one day, select a date.</a>
-        <input type="datetime-local" v-model="dateString">
-        <br>
+        <h3>Üks päev</h3>
+        <a>Ühe päeva kohta täpsema info nägemiseks vali kuupäev.</a>
+        <div class="time-period-selecting">
+          <input type="datetime-local" v-model="dateString">
+        </div>
         <div id="results-container" v-if="dateString">
-          <label v-if="oneDayInfo.polarDay">POLAR DAY</label>
-          <label v-else-if="oneDayInfo.polarNight">POLAR NIGHT</label>
-
-          <label v-if="oneDayInfo.sunriseStr">Sunrise: {{ oneDayInfo.sunriseStr }}</label>
-          <br>
-          <label v-if="oneDayInfo.sunsetStr">Sunset: {{ oneDayInfo.sunsetStr }}</label>
-          <br>
-          <label>Length of day: {{ oneDayInfo.dayLength }}</label>
+          <div v-if="oneDayInfo.polarDay">
+            <label>POLAARPÄEV</label>
+          </div>
+          <div v-else-if="oneDayInfo.polarNight">
+            <label>POLAARÖÖ</label>
+          </div>
+          <div v-else>
+            <label>Päikesetõus: {{ oneDayInfo.sunriseStr }}</label>
+            <br>
+            <label>Päikeseloojang: {{ oneDayInfo.sunsetStr }}</label>
+          </div>
+          <label>Päeva pikkus: {{ oneDayInfo.dayLength }}</label>
           <br>
         </div>
       </div>
       <div id="lower-info">
-        <h3>Period of time</h3>
-        <a>To visualize the length of day over a period of time, select a time period.</a>
-        <div id="time-period-selecting">
+        <h3>Ajaperiood</h3>
+        <a>Et visualiseerida päeva pikkuse muutumist ajas, vali ajaperiood.</a>
+        <div class="time-period-selecting">
           <div>
-            <label>Start date: </label>
+            <label>Alguskuupäev: </label>
             <input type="datetime-local" v-model="startDate">
-            <label>{{startDate}}</label>
           </div>
           <div>
-            <label>End date: </label>
+            <label>Lõppkuupäev: </label>
             <input type="datetime-local" v-model="endDate">
           </div>
         </div>
@@ -62,9 +66,9 @@ export default {
       endDate: null,
 
       chartOptions: {
-        title: 'Day length visualization',
-        hAxis: {title: 'Date',  titleTextStyle: {color: '#333'}},
-        vAxis: {title: 'Day length in hours'}
+        title: 'Päeva pikkuse muutumine ajas',
+        hAxis: {title: 'Kuupäev',  titleTextStyle: {color: '#333'}},
+        vAxis: {title: 'Päeva pikkus tundides'}
       }
     }
   },
@@ -77,21 +81,19 @@ export default {
       for (let i = 0; i < diffInDays; i++) {
         let date = new Date(this.startDate)
         date.setDate(date.getDate() + i)
-        //let times = SunCalc.getTimes(date, this.selectedCoords.lat, this.selectedCoords.lng)
-        //let dayLength = (times.sunset - times.sunrise) / 1000 / 60 / 60
         let dayLength = this.calculateTimes(date, this.selectedCoords.lat, this.selectedCoords.lng).dayLength
         data.push([date, dayLength])
       }
-      data.unshift(['Date', 'Length of day'])
+      data.unshift(['Kuupäev', 'Päeva pikkus'])
       return data
     },
     oneDayInfo: function () {
       if (!this.dateString) {
-        alert("Please select a date")
+        alert("Palun vali kuupäev")
         return
       }
       if (!this.selectedCoords) {
-        alert("Please specify coordinates")
+        alert("Palun määra koordinaadid")
         return;
       }
 
@@ -106,8 +108,14 @@ export default {
         }
       }
 
-      let sunriseStr = times.sunrise.getHours() + ':' + times.sunrise.getMinutes();
-      let sunsetStr = times.sunset.getHours() + ':' + times.sunset.getMinutes();
+      let sunriseMin = times.sunrise.getMinutes()
+      if (sunriseMin < 10) sunriseMin = '0' + sunriseMin
+      let sunriseStr = times.sunrise.getHours() + ':' + sunriseMin;
+
+      let sunsetMin = times.sunset.getMinutes()
+      if (sunsetMin < 10) sunsetMin = '0' + sunsetMin
+      let sunsetStr = times.sunset.getHours() + ':' + sunsetMin;
+
       let dayLengthMinutes = times.dayLength * 60
       let dayLengthHours = Math.floor(dayLengthMinutes / 60);
       let dayLengthTime = dayLengthHours + 'h ' + Math.round(dayLengthMinutes - dayLengthHours * 60) + 'min';
@@ -169,8 +177,12 @@ export default {
   justify-content: left;
 }
 
+h3 {
+  margin: 5px;
+}
+
 #main-section > div {
-  border: solid 3px black;
+  border: solid 2px black;
 }
 
 #info-area {
@@ -181,15 +193,25 @@ export default {
 #info-area > div {
   margin: 5px;
   border: 2px solid lightgray;
-  width: 95%;
+  width: auto;
+  height: 47%;
+  padding: 0 5px 0 5px;
 }
 
-#upper-info {
-  height: 50%;
+.time-period-selecting {
+  margin: 5px 10% 5px 10%;
+  width: auto;
 }
 
-#lower-info {
-  height: 50%;
+.time-period-selecting div {
+  float: right;
+}
+
+#results-container {
+  background-color: #cde2ff;
+  border: 2px groove #70a7fc;
+  margin: 3% 15% 3% 15%;
+  width: auto;
 }
 
 #graph-area {

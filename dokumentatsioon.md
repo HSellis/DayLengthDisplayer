@@ -22,3 +22,4 @@
 
 02.05:
 1.5h - polaarpäeva ja polaarööga arvestamine ja errorite vältimine
+1h -   kujunduse parandamine

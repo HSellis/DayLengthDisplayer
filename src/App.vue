@@ -1,20 +1,20 @@
 <template>
   <div id="app">
-    <h1>Day length calculator</h1>
+    <h1>Päeva pikkuse kalkulaator</h1>
     <section id="main-container">
       <div id="coordinate-area">
         <div id="info-area">
-          <h3>Specify coordinates</h3>
-          <label>Select coordinates from the map</label>
+          <h3>Määra koordinaadid</h3>
+          <label>Vali koordinaadid kaardilt</label>
           <br>
           <br>
-          <label>Or enter the coordinates manually.</label>
+          <label>Või sisesta koordinaadid käsitsi.</label>
           <div>
-            <label>Latitude: </label>
+            <label>Laiuskraad: </label>
             <input type="number" min="-90" max="90" step="0.0001" v-model="latitude">
           </div>
           <div>
-            <label>Longitude: </label>
+            <label>Pikkuskraad: </label>
             <input type="number" min="-180" max="180" step="0.0001" v-model="longitude">
           </div>
         </div>
@@ -68,30 +68,30 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 15px;
-  height: 100%;
-  width: 98%;
+  margin: 10px;
+  height: 125vh;
+  width: auto;
 }
 #main-container {
   width: 100%;
-  height: 800px;
+  height: 100%;
   align-items: center;
-  padding: 10px;
-  border: dotted black;
-}
-
-#main-container > div {
-  width: 100%;
-  height: 50%;
 }
 
 #coordinate-area {
+  width: 100%;
+  height: 40%;
   display: flex;
   justify-content: left;
 }
 
+#calculator {
+  width: 100%;
+  height: 60%;
+}
+
 #coordinate-area > div {
-  border: solid 3px black;
+  border: solid 2px black;
 }
 
 #info-area {

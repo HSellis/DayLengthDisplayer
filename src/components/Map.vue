@@ -62,7 +62,7 @@ export default {
     }
   },
   mounted() {
-    // for fixing a bug with LMarker: https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
+    // for fixing a bug with LMarker, code from https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
     L.Icon.Default.mergeOptions({
       iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
       iconUrl: require('leaflet/dist/images/marker-icon.png'),

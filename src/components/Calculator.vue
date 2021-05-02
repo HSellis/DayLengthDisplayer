@@ -67,7 +67,7 @@ export default {
 
       chartOptions: {
         title: 'Päeva pikkuse muutumine ajas',
-        hAxis: {title: 'Kuupäev',  titleTextStyle: {color: '#333'}},
+        hAxis: {title: 'Kuupäev'},
         vAxis: {title: 'Päeva pikkus tundides'}
       }
     }
@@ -75,9 +75,8 @@ export default {
   computed: {
     chartData: function () {
       let diffInDays = (new Date(this.endDate) - new Date(this.startDate)) / 1000 / 60 / 60 / 24;
-      let data = [
-        //['Date', 'Length of day']
-      ]
+      let data = []
+      // Iga päeva kohta arvuta päeva pikkus
       for (let i = 0; i < diffInDays; i++) {
         let date = new Date(this.startDate)
         date.setDate(date.getDate() + i)
@@ -99,6 +98,7 @@ export default {
 
       let times = this.calculateTimes(new Date(this.dateString), this.selectedCoords.lat, this.selectedCoords.lng)
       if (!times.sunrise || !times.sunset) {
+        // polaarpäev või polaaröö
         return {
           sunriseStr: null,
           sunsetStr: null,
@@ -136,15 +136,17 @@ export default {
     calculateTimes: function (date, latitude, longitude) {
       let times = SunCalc.getTimes(date, latitude, longitude);
       if (isNaN(times.sunrise) || isNaN(times.sunset)) {
-        // polar day or polar night
+        // polaarpäev või polaaröö
         const springEquinox = new Date(date.getFullYear() + '-03-20')
         const autumnEquinox = new Date(date.getFullYear() + '-09-23')
         let dayLength = null
         if (date < springEquinox || date > autumnEquinox) {
+          // lähemal talvisele pööripäevale kui suvisele (põhjapoolkeral)
           if (latitude > 0) dayLength = 0
           else dayLength = 24
         }
         else if (date > springEquinox && date < autumnEquinox) {
+          // lähemal suvisele pööripäevale kui talvisele (põhjapoolkeral)
           if (latitude > 0) dayLength = 24
           else dayLength = 0
         }

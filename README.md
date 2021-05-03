@@ -43,3 +43,6 @@ Viimaseks raskuseks oli polaarpäevade ja -öödega arvestamine - SunCalci funkt
 * 1.5h - polaarpäeva ja polaarööga arvestamine ja errorite vältimine
 * 1h -   kujunduse parandamine
 * 1h -   dokumentatsiooni täiustamine
+
+03.05:
+* 0.5h - kellaaegade konverteerimine UTC-sse lokaalsest ajast

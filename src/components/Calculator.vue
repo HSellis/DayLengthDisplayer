@@ -110,7 +110,6 @@ export default {
 
       // converto to UTC
       let sunriseUTC = new Date(times.sunrise.getTime() + times.sunrise.getTimezoneOffset() * 60000)
-      console.log(times.sunrise.getTimezoneOffset())
       let sunriseMin = sunriseUTC.getMinutes()
       if (sunriseMin < 10) sunriseMin = '0' + sunriseMin
       let sunriseStr = sunriseUTC.getHours() + ':' + sunriseMin;

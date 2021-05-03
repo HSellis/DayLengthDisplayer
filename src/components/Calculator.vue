@@ -5,7 +5,7 @@
         <h3>Üks päev</h3>
         <a>Ühe päeva kohta täpsema info nägemiseks vali kuupäev.</a>
         <div class="time-period-selecting">
-          <input type="datetime-local" v-model="dateString">
+          <input type="date" v-model="dateString">
         </div>
         <div id="results-container" v-if="dateString">
           <div v-if="oneDayInfo.polarDay">
@@ -15,9 +15,9 @@
             <label>POLAARÖÖ</label>
           </div>
           <div v-else>
-            <label>Päikesetõus: {{ oneDayInfo.sunriseStr }}</label>
+            <label>Päikesetõus: {{ oneDayInfo.sunriseStr }} UTC</label>
             <br>
-            <label>Päikeseloojang: {{ oneDayInfo.sunsetStr }}</label>
+            <label>Päikeseloojang: {{ oneDayInfo.sunsetStr }} UTC</label>
           </div>
           <label>Päeva pikkus: {{ oneDayInfo.dayLength }}</label>
           <br>
@@ -29,11 +29,11 @@
         <div class="time-period-selecting">
           <div>
             <label>Alguskuupäev: </label>
-            <input type="datetime-local" v-model="startDate">
+            <input type="date" v-model="startDate">
           </div>
           <div>
             <label>Lõppkuupäev: </label>
-            <input type="datetime-local" v-model="endDate">
+            <input type="date" v-model="endDate">
           </div>
         </div>
       </div>
@@ -108,13 +108,18 @@ export default {
         }
       }
 
-      let sunriseMin = times.sunrise.getMinutes()
+      // converto to UTC
+      let sunriseUTC = new Date(times.sunrise.getTime() + times.sunrise.getTimezoneOffset() * 60000)
+      console.log(times.sunrise.getTimezoneOffset())
+      let sunriseMin = sunriseUTC.getMinutes()
       if (sunriseMin < 10) sunriseMin = '0' + sunriseMin
-      let sunriseStr = times.sunrise.getHours() + ':' + sunriseMin;
+      let sunriseStr = sunriseUTC.getHours() + ':' + sunriseMin;
 
-      let sunsetMin = times.sunset.getMinutes()
+      // convert to UTC
+      let sunsetUTC = new Date(times.sunset.getTime() + times.sunset.getTimezoneOffset() * 60000)
+      let sunsetMin = sunsetUTC.getMinutes()
       if (sunsetMin < 10) sunsetMin = '0' + sunsetMin
-      let sunsetStr = times.sunset.getHours() + ':' + sunsetMin;
+      let sunsetStr = sunsetUTC.getHours() + ':' + sunsetMin;
 
       let dayLengthMinutes = times.dayLength * 60
       let dayLengthHours = Math.floor(dayLengthMinutes / 60);
@@ -212,7 +217,7 @@ h3 {
 #results-container {
   background-color: #cde2ff;
   border: 2px groove #70a7fc;
-  margin: 3% 15% 3% 15%;
+  margin: 3% 10% 3% 10%;
   width: auto;
 }
 
